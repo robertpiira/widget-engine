@@ -1,0 +1,9 @@
+.name, .value {
+    width: 150px;
+}
+.bar {
+    height: 12px;
+    margin: 3px 6px 0 0;
+    float: left;
+    background-color: #4EB1CB;
+}

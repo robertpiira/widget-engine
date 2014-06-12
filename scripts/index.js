@@ -22,25 +22,39 @@
     }
 
     for (;i<l;i++) {
-      if (widgetDependencies[i].indexOf('.js')) {
+      if (widgetDependencies[i].indexOf('.js') > -1) {
         scriptDependencies.push(widgetDependencies[i]);
       }
-      if (widgetDependencies[i].indexOf('.css')) {
+      if (widgetDependencies[i].indexOf('.css') > -1) {
         cssDependencies.push(widgetDependencies[i]);
       }
     }
 
     $script([scriptDependencies], function() {
-      widgetLogicFn();
+      widgetLogicFn.call();
     });
 
-    this.injectCSS_(cssDependencies);
+
+    if (cssDependencies.length) {
+      this.injectCSS_(cssDependencies);
+    }
+  };
+
+  WidgetEngine.prototype.loadFile = function render(file, fn)  {
+
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      fn(this.responseText);
+    };
+    xhr.open('get', file, true);
+    xhr.send();
+
   };
 
   WidgetEngine.prototype.injectCSS_ = function injectCSS(cssDependencies) {
 
     var i = 0, l = cssDependencies.length;
-    var head = document.getElementsByName('head')[0];
+    var head = document.getElementsByTagName('head')[0];
     var tag = null;
     var t = null;
 
@@ -59,10 +73,7 @@
     }
   };
 
-  if (module && module.exports) {
-    module.exports = new WidgetEngine();
-  }
-  else if (window && !window.$we) {
+  if (window && !window.$we) {
     window.$we = new WidgetEngine();
   }
 
