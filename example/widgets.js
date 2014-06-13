@@ -9,11 +9,10 @@ $we.register('barchart', ['bower_components/underscore/underscore.js', 'css/barc
   var renderChart = function(el, widgetData) {
 
     $we.loadFile(template, function(template) {
-      var tpl = _.template(template, {
+      el.innerHTML = _.template(template, {
         title: el.getAttribute('data-widget-title'),
         data: JSON.parse(widgetData)
       });
-      el.innerHTML = tpl;
     });
 
   };
