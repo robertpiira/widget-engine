@@ -68,7 +68,7 @@
       }
     }
 
-    $script([scriptDependencies], function() {
+    $script(scriptDependencies, function() {
       widgetLogicFn.call(engine);
     });
 
