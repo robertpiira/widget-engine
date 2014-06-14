@@ -3,9 +3,9 @@
 $we.register('qsFruits', ['bower_components/underscore/underscore.js', 'bower_components/jquery/dist/jquery.min.js', 'css/banana.css'], function () {
 
   var templateUrl = 'templates/fruits.tpl';
-  var fruitData = ['banan', 'citron', 'melon', 'mango'];
+  var widgets = document.querySelectorAll('[data-widget-type="fruitget"]');
 
-  var widgetView = $we.View({
+  var fruitView = $we.View({
 
     initialize: function () {
 
@@ -26,20 +26,28 @@ $we.register('qsFruits', ['bower_components/underscore/underscore.js', 'bower_co
       var _this = this;
       var markup;
 
-      $we.loadFile(templateUrl, function(template) {
+      $we.loadFile(this.$el.attr('data-widget-data-src'), function(data) {
 
-        _this.$el.html(template);
+        _this.data = JSON.parse(data);
 
-        markup = _this.$('#header-tpl').html();
-        _this.$('#header').html(_.template(markup, { title: _this.$el.attr('data-widget-title') } ));
+        $we.loadFile(templateUrl, function(template) {
+
+          _this.$el.html(template);
+
+          markup = _this.$('#header-tpl').html();
+          _this.$('#header').html(_.template(markup, { title: _this.$el.attr('data-widget-title') } ));
+
+        });
 
       });
+
+
 
     },
 
     shuffleAndRender: function () {
 
-      var shuffledData = _.shuffle(fruitData);
+      var shuffledData = _.shuffle(this.data);
       var markup = $('#foods-tpl').html();
 
       this.$('#foods').html(_.template(markup, { foods: shuffledData } ));
@@ -48,8 +56,8 @@ $we.register('qsFruits', ['bower_components/underscore/underscore.js', 'bower_co
 
     pickFood: function () {
 
-        var favoIndex = _.random(0, fruitData.length - 1);
-        var favoFood = fruitData[favoIndex];
+        var favoIndex = _.random(0, this.data.length - 1);
+        var favoFood = this.data[favoIndex];
 
         alert('the pick is: ' + favoFood);
 
@@ -58,9 +66,13 @@ $we.register('qsFruits', ['bower_components/underscore/underscore.js', 'bower_co
   });
 
 
+  _.each(widgets, function (widget) {
+
+    fruitView.bootstrap({ el: widget });
+
+  });
 
 
-  widgetView.bootstrap({ el: document.getElementById('qsFruits') });
 
 
 
