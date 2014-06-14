@@ -58,13 +58,10 @@ $we.register('qsFruits', ['bower_components/underscore/underscore.js', 'bower_co
   });
 
 
-  $(function () {
 
-    var wiidget = widgetView.bootstrap({ el: document.getElementById( $we.name ) });
 
-    console.log(wiidget)
+  widgetView.bootstrap({ el: document.getElementById( $we.name ) });
 
-  });
 
 
 });
