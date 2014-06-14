@@ -44,6 +44,8 @@
    */
   WidgetEngine.prototype.register = function register(widgetName, widgetDependencies, widgetLogicFn) {
 
+    this.name = widgetName;
+
     var i = 0,
       l = widgetDependencies.length,
       scriptDependencies = [],
@@ -117,6 +119,81 @@
         head.appendChild(tag);
       }
     }
+  };
+
+  /**
+   * Utility to merge objects
+   * @param {obj} base object.
+   * @param {obj} the following (one or more) object(s) keys will be added to the base object.
+   */
+  WidgetEngine.prototype.extend = function (obj) {
+
+    var args = [].slice.call(arguments, 1);
+    var i = 0, l = args.length;
+
+    for (;i<l;i++) {
+      if (args[i]) {
+        for (var prop in args[i]) {
+          obj[prop] = args[i][prop];
+        }
+      }
+    }
+
+    return obj;
+
+  };
+
+  /**
+   * Will create a OPTIONAL View Module for the widget
+   * that gets bound to the widget wrapper DOM element.
+   *
+   * @usage:
+   *
+   *    var view = $we.View({
+   *          initialize: function () {
+   *            // init more methods.
+   *            // initalize will fire directly when
+   *            // the views.init method is triggered.
+   *          },
+   *          // ...what ever methods you'll need.
+   *        });
+   *
+   *    // pass in the the widget wrapper
+   *    // to the views boostrap method
+   *    // to initialize the widget's view module
+   *    view.boostrap({ el: domElement });
+   *
+   */
+  WidgetEngine.prototype.View = function View(module) {
+
+    var ViewModule = function (module) {
+
+      WidgetEngine.prototype.extend(this, module);
+
+      this.el = this.el || document.createElement('div');
+
+      if (window.$) {
+        this.$el = $(this.el);
+        this.$ = function (selector) { return this.$el.find(selector); };
+      }
+
+      if (typeof this.initialize === 'function') {
+        this.initialize();
+      }
+
+    };
+
+    return {
+
+      bootstrap: function (settings) {
+
+        WidgetEngine.prototype.extend(module, settings);
+
+        return new ViewModule(module);
+      }
+
+    };
+
   };
 
   /**
