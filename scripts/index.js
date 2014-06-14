@@ -144,7 +144,7 @@
   };
 
   /**
-   * Will create a OPTIONAL View Module for the widget
+   * Will create an OPTIONAL View Module for the widget
    * that gets bound to the widget wrapper DOM element.
    *
    * @usage:
