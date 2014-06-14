@@ -60,7 +60,7 @@ $we.register('qsFruits', ['bower_components/underscore/underscore.js', 'bower_co
 
 
 
-  widgetView.bootstrap({ el: document.getElementById( $we.name ) });
+  widgetView.bootstrap({ el: document.getElementById('qsFruits') });
 
 
 

@@ -44,8 +44,6 @@
    */
   WidgetEngine.prototype.register = function register(widgetName, widgetDependencies, widgetLogicFn) {
 
-    this.name = widgetName;
-
     var i = 0,
       l = widgetDependencies.length,
       scriptDependencies = [],
