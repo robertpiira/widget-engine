@@ -172,7 +172,7 @@
 
       this.el = this.el || document.createElement('div');
 
-      if (window.$) {
+      if (window && window.$) {
         this.$el = $(this.el);
         this.$ = function (selector) { return this.$el.find(selector); };
       }
