@@ -44,7 +44,7 @@
    */
   WidgetEngine.prototype.register = function register(widgetName, widgetDependencies, widgetLogicFn) {
 
-    var widgets = [].slice.call(document.querySelectorAll('[data-widget-type="' + widgetName + '"]'));
+    var widgets = document.querySelectorAll('[data-widget-type="' + widgetName + '"]');
 
     if (!widgets.length) {
       throw new Error('No ' + widgetName + ' Widgets found');
@@ -117,7 +117,7 @@
       if (!document.getElementById(t[t.length])) {
         tag = document.createElement('link');
         tag.setAttribute('href', cssDependencies[i]);
-        tag.setAttribute('id',t[t.length]);
+        tag.setAttribute('id',t[t.length - 1]);
         tag.setAttribute('rel', 'stylesheet');
         tag.setAttribute('type', 'text/css');
         head.appendChild(tag);
