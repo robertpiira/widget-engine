@@ -9,7 +9,8 @@ Then in terminal (root folder) run:
 - grunt
 
 Install optional server runner
-npm install -g serve
+
+- npm install -g serve
 
 Then in terminal run:
 
