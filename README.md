@@ -2,7 +2,7 @@
 
 - git clone [this repo]
 
-Then in terminal (root folder) run:
+Then in terminal (project root folder) run:
 
 - npm install
 - bower install
