@@ -1,6 +1,6 @@
 'use strict';
 
-$we.register('graphWidget', ['bower_components/underscore/underscore.js', 'bower_components/d3/d3.min.js', 'bower_components/jquery/dist/jquery.min.js', 'css/graph.css'], function (widgets) {
+$we.register('graphWidget', ['/bower_components/underscore/underscore.js', '/bower_components/d3/d3.min.js', '/bower_components/jquery/dist/jquery.min.js', 'css/graph.css'], function (widgets) {
 
   var graphWidgets = widgets;
 
@@ -8,8 +8,7 @@ $we.register('graphWidget', ['bower_components/underscore/underscore.js', 'bower
 
   var drawGraph = function (container, data) {
 
-
-      /* implementation heavily influenced by http://bl.ocks.org/1166403 */
+    /* implementation heavily influenced by http://bl.ocks.org/1166403 */
 
     // define dimensions of graph
     var m = [80, 80, 80, 80]; // margins
@@ -69,9 +68,6 @@ $we.register('graphWidget', ['bower_components/underscore/underscore.js', 'bower
         // Add the line by appending an svg:path element with the data line we created above
       // do this AFTER the axes above so that the line is above the tick-lines
         graph.append("svg:path").attr("d", line(data));
-
-
-
 
   };
 

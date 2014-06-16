@@ -1,6 +1,6 @@
 'use strict';
 
-$we.register('barchart', ['bower_components/underscore/underscore.js', 'css/barchart.css'], function() {
+$we.register('barchart', ['/bower_components/underscore/underscore.js', 'css/barchart.css'], function() {
 
   var template = 'templates/barchart.tpl';
   var charts = document.querySelectorAll('[data-widget-type="barchart"]');
