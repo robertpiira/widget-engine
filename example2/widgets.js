@@ -1,30 +1,34 @@
 'use strict';
 
-$we.register('qsFruits', ['/example2/bower_components/underscore/underscore.js', '/example2/bower_components/jquery/dist/jquery.min.js', '/example2/css/banana.css'], function () {
+$we.register('fruitget', ['/example2/bower_components/underscore/underscore.js', '/example2/bower_components/jquery/dist/jquery.min.js', '/example2/css/banana.css'], function (widgets) {
 
   var templateUrl = '/example2/templates/fruits.tpl';
-  var widgets = document.querySelectorAll('[data-widget-type="fruitget"]');
+  var fruits = widgets;
 
   var FruitWidget = function FruitWidget(el) {
 
     this.el = el;
     this.$el = $(this.el);
 
-    this.initialize = function () {
+  };
+
+  FruitWidget.prototype = {
+
+    initialize: function () {
 
       this.events();
       this.render();
 
-    };
+    },
 
-    this.events = function () {
+    events: function () {
 
       this.$el.on('click', '.js-reco-btn', $.proxy(this.pickFood, this));
       this.$el.on('click', '.js-btn', $.proxy(this.shuffleAndRender, this));
 
-    };
+    },
 
-    this.render = function () {
+    render: function () {
 
       var _this = this;
       var markup;
@@ -44,34 +48,33 @@ $we.register('qsFruits', ['/example2/bower_components/underscore/underscore.js',
 
       });
 
-    };
+    },
 
-    this.shuffleAndRender= function () {
+    shuffleAndRender: function () {
 
       var shuffledData = _.shuffle(this.data);
       var markup = this.$el.find('#foods-tpl').html();
 
       this.$el.find('#foods').html(_.template(markup, { foods: shuffledData } ));
 
-    };
+    },
 
-    this.pickFood = function () {
+    pickFood: function () {
 
         var favoIndex = _.random(0, this.data.length - 1);
         var favoFood = this.data[favoIndex];
 
         alert('the pick is: ' + favoFood);
 
-    };
-
-    this.initialize();
+    }
 
   };
 
+  _.each(fruits, function (fruit) {
 
-  _.each(widgets, function (widget) {
+    console.log(fruit);
 
-    new FruitWidget(widget);
+    new FruitWidget(fruit).initialize();
 
   });
 

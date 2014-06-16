@@ -44,6 +44,12 @@
    */
   WidgetEngine.prototype.register = function register(widgetName, widgetDependencies, widgetLogicFn) {
 
+    var widgets = [].slice.call(document.querySelectorAll('[data-widget-type="' + widgetName + '"]'));
+
+    if (!widgets.length) {
+      throw new Error('No ' + widgetName + ' Widgets found');
+    }
+
     var i = 0,
       l = widgetDependencies.length,
       scriptDependencies = [],
@@ -56,7 +62,7 @@
       };
     } else {
       // dependencies for this widget are already loaded/loading
-      widgetLogicFn.call(engine);
+      widgetLogicFn.call(engine, widgets);
     }
 
     for (;i<l;i++) {
@@ -69,7 +75,7 @@
     }
 
     $script(scriptDependencies, function() {
-      widgetLogicFn.call(engine);
+      widgetLogicFn.call(engine, widgets);
     });
 
     if (cssDependencies.length) {
