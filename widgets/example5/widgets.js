@@ -3,6 +3,7 @@
 $we.register('mapWidget', ['/bower_components/jquery/dist/jquery.min.js', 'css/qs-maps.css'], function (widgets) {
 
   var googleMapsSrc = 'http://maps.googleapis.com/maps/api/js?v=3&sensor=false&callback=qsGMInitialize';
+  var spinner;
 
   var loadGoolgeMapsScript = function (src, errorCallback) {
 
@@ -18,12 +19,15 @@ $we.register('mapWidget', ['/bower_components/jquery/dist/jquery.min.js', 'css/q
   var renderMap = function () {
 
     $.each(widgets, function (i, mapContainer) {
-      load($(mapContainer));
+      spinner = $we.spinner().start(mapContainer);
+      load($(mapContainer), spinner);
     });
 
-    function load ($mapContainer) {
+    function load ($mapContainer, spinner) {
 
-      $.when( loadSettings($mapContainer), loadStyle($mapContainer) ).done(function (settings, styles) {
+      $.when( loadSettings($mapContainer), loadStyles($mapContainer) ).done(function (settings, styles) {
+
+        spinner.remove();
 
         var settings = settings[0];
         var styles = (styles && styles.length) ? styles[0] : null;
@@ -45,7 +49,7 @@ $we.register('mapWidget', ['/bower_components/jquery/dist/jquery.min.js', 'css/q
       return $.ajax(settingsSrc);
     }
 
-    function loadStyle ($mapContainer) {
+    function loadStyles ($mapContainer) {
 
       var styleSrc = $mapContainer.attr('data-map-style-src');
 
