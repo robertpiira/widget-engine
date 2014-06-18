@@ -156,14 +156,10 @@
 
       start: function (widget) {
 
-        if (!widget) {
-          throw new Error('QS WidgetEngine, spinner: Missig widgets @param');
-        }
+        if (!widget) { throw new Error('QS WidgetEngine, spinner: Missig widgets @param'); }
 
         widget.appendChild(this.el);
-
         return this;
-
       },
 
       remove: function () {

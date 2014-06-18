@@ -3,7 +3,6 @@
 $we.register('mapWidget', ['/bower_components/jquery/dist/jquery.min.js', 'css/qs-maps.css'], function (widgets) {
 
   var googleMapsSrc = 'http://maps.googleapis.com/maps/api/js?v=3&sensor=false&callback=qsGMInitialize';
-  var spinner;
 
   var loadGoolgeMapsScript = function (src, errorCallback) {
 
@@ -16,14 +15,17 @@ $we.register('mapWidget', ['/bower_components/jquery/dist/jquery.min.js', 'css/q
 
   };
 
-  var renderMap = function () {
+  var renderMap = function (mapContainer) {
 
-    $.each(widgets, function (i, mapContainer) {
-      spinner = $we.spinner().start(mapContainer);
-      load($(mapContainer), spinner);
-    });
+    // fetch map settings and/or style-settings
+    // to the jQuery wrapped widget container
+    // the second @param is a new Spinner instace
+    // for the same widget container
+    fetchMapSettings($(mapContainer), $we.spinner().start(mapContainer));
 
-    function load ($mapContainer, spinner) {
+
+
+    function fetchMapSettings ($mapContainer, spinner) {
 
       $.when( loadSettings($mapContainer), loadStyles($mapContainer) ).done(function (settings, styles) {
 
@@ -88,7 +90,13 @@ $we.register('mapWidget', ['/bower_components/jquery/dist/jquery.min.js', 'css/q
 
 
   // google maps script loader callback initialized in window scope
-  window.qsGMInitialize = window.qsGMInitialize || function initialize() { renderMap() };
+  window.qsGMInitialize = window.qsGMInitialize || function initialize() {
+
+    $.each(widgets, function (i, mapContainer) {
+      renderMap(mapContainer);
+    });
+
+  };
 
 
   // custom google map script loader
