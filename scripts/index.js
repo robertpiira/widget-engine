@@ -44,17 +44,20 @@
    */
   WidgetEngine.prototype.register = function register(widgetName, widgetDependencies, widgetLogicFn) {
 
-    var widgets = document.querySelectorAll('[data-widget-type="' + widgetName + '"]');
-
-    if (!widgets.length) {
-      throw new Error('QS WidgetEngine: No ' + widgetName + ' Widgets found');
-    }
-
     var i = 0,
       l = widgetDependencies.length,
       scriptDependencies = [],
       cssDependencies = [],
-      engine = this;
+      engine = this,
+      nodes = null;
+
+    // find out if there are any nodes that match the widget
+    nodes = document.querySelectorAll('[data-widget-type="' + widgetName + '"]');
+
+    if (!nodes.length) {
+      // no matching nodes for this widget - do nothing
+      return;
+    }
 
     if (!this._widgets[widgetName]) {
       this._widgets[widgetName] = {
@@ -62,7 +65,7 @@
       };
     } else {
       // dependencies for this widget are already loaded/loading
-      widgetLogicFn.call(engine, widgets);
+      widgetLogicFn.call(engine, nodes);
     }
 
     for (;i<l;i++) {
@@ -75,7 +78,7 @@
     }
 
     $script(scriptDependencies, function() {
-      widgetLogicFn.call(engine, widgets);
+      widgetLogicFn.call(engine, nodes);
     });
 
     if (cssDependencies.length) {
@@ -124,55 +127,6 @@
       }
     }
   };
-
-  /**
-   * Constructor to add a new Spinner el into widgets
-   * Start method: @param {widget DOM element}
-   *
-   * @usage:
-   *
-   *    var spinner = $we.spinner();
-   *    spinner.start(widget);
-   *    spinner.stop();
-   *
-   *
-   */
-  WidgetEngine.prototype.spinner = function () {
-
-    var Spinner = function Spinner () {
-
-      this.el = (function () {
-
-        var el = document.createElement('div');
-        el.innerHTML = '...Laddar';
-
-        return el;
-
-      }());
-
-    };
-
-    Spinner.prototype = {
-
-      start: function (widget) {
-
-        if (!widget) { throw new Error('QS WidgetEngine, spinner: Missig widgets @param'); }
-
-        widget.appendChild(this.el);
-        return this;
-      },
-
-      remove: function () {
-        this.el.remove();
-      }
-
-    };
-
-    return new Spinner();
-
-  };
-
-
 
   /**
    * Exposes the WidgetEngine as a singleton on the global namespace.

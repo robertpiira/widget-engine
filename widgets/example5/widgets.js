@@ -19,17 +19,13 @@ $we.register('mapWidget', ['/bower_components/jquery/dist/jquery.min.js', 'css/q
 
     // fetch map settings and/or style-settings
     // to the jQuery wrapped widget container
-    // the second @param is a new Spinner instace
-    // for the same widget container
-    fetchMapSettings($(mapContainer), $we.spinner().start(mapContainer));
+    fetchMapSettings($(mapContainer));
 
 
 
-    function fetchMapSettings ($mapContainer, spinner) {
+    function fetchMapSettings ($mapContainer) {
 
       $.when( loadSettings($mapContainer), loadStyles($mapContainer) ).done(function (settings, styles) {
-
-        spinner.remove();
 
         var settings = settings[0];
         var styles = (styles && styles.length) ? styles[0] : null;
