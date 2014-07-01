@@ -49,16 +49,8 @@
       scriptDependencies = [],
       cssDependencies = [],
       engine = this,
-      nodes = null;
-
-    var forEach = function(arr, callback) {
-      var index = 0;
-      var length = arr.length;
-
-      for (;index<length;index++) {
-        callback(arr[index]);
-      }
-    };
+      nodes = null,
+      isRegistered = false;
 
     // find out if there are any nodes that match the widget
     nodes = document.querySelectorAll('[data-widget-type="' + widgetName + '"]');
@@ -74,9 +66,8 @@
       };
     } else {
       // dependencies for this widget are already loaded/loading
-      forEach(nodes, function(node) {
-        widgetLogicFn.call(engine, node);
-      })
+      widgetLogicFn.call(engine, nodes);
+      isRegistered = true;
     }
 
     for (;i<l;i++) {
@@ -88,16 +79,15 @@
       }
     }
 
-    $script(scriptDependencies, function() {
-      forEach(nodes, function(node) {
-        widgetLogicFn.call(engine, node);
-      })
-    });
+    if (!isRegistered) {
+      $script(scriptDependencies, function() {
+        widgetLogicFn.call(engine, nodes);
+      });
+    }
 
     if (cssDependencies.length) {
       this.injectCSS_(cssDependencies);
     }
-
   };
 
   /**

@@ -6,10 +6,20 @@ $we.register('mapWidget', ['/bower_components/jquery/dist/jquery.min.js', 'css/q
 
   var loadGoolgeMapsScript = function (src, errorCallback) {
 
+    var QSMapScript = document.getElementById('QSGoogleMap');
+
+    if (QSMapScript) {
+
+      window.qsGMInitialize();
+
+      return;
+    }
+
     var script = document.createElement("script");
 
     script.type = 'text/javascript';
     script.src = src;
+    script.id = 'QSGoogleMap';
     script.onerror = errorCallback;
     document.getElementsByTagName('head')[0].appendChild(script);
 
@@ -88,9 +98,11 @@ $we.register('mapWidget', ['/bower_components/jquery/dist/jquery.min.js', 'css/q
   // google maps script loader callback initialized in window scope
   window.qsGMInitialize = window.qsGMInitialize || function initialize() {
 
+
     $.each(widgets, function (i, mapContainer) {
       renderMap(mapContainer);
     });
+
 
   };
 
