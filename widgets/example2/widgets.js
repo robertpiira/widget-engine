@@ -1,9 +1,8 @@
 'use strict';
 
-$we.register('fruitget', ['/bower_components/underscore/underscore.js', '/bower_components/jquery/dist/jquery.min.js', '/widgets/example2/css/banana.css'], function (widgets) {
+$we.register('fruitget', ['/bower_components/underscore/underscore.js', '/bower_components/jquery/dist/jquery.min.js', '/widgets/example2/css/banana.css'], function (widget) {
 
   var templateUrl = '/widgets/example2/templates/fruits.tpl';
-  var fruits = widgets;
 
   var FruitWidget = function FruitWidget(el) {
 
@@ -70,14 +69,9 @@ $we.register('fruitget', ['/bower_components/underscore/underscore.js', '/bower_
 
   };
 
-  _.each(fruits, function (fruit) {
+    console.log(widget);
 
-    console.log(fruit);
-
-    new FruitWidget(fruit).initialize();
-
-  });
-
+    new FruitWidget(widget).initialize();
 
 
 

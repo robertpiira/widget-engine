@@ -51,6 +51,15 @@
       engine = this,
       nodes = null;
 
+    var forEach = function(arr, callback) {
+      var index = 0;
+      var length = arr.length;
+
+      for (;index<length;index++) {
+        callback(arr[index]);
+      }
+    };
+
     // find out if there are any nodes that match the widget
     nodes = document.querySelectorAll('[data-widget-type="' + widgetName + '"]');
 
@@ -65,7 +74,9 @@
       };
     } else {
       // dependencies for this widget are already loaded/loading
-      widgetLogicFn.call(engine, nodes);
+      forEach(nodes, function(node) {
+        widgetLogicFn.call(engine, node);
+      })
     }
 
     for (;i<l;i++) {
@@ -78,12 +89,15 @@
     }
 
     $script(scriptDependencies, function() {
-      widgetLogicFn.call(engine, nodes);
+      forEach(nodes, function(node) {
+        widgetLogicFn.call(engine, node);
+      })
     });
 
     if (cssDependencies.length) {
       this.injectCSS_(cssDependencies);
     }
+
   };
 
   /**
